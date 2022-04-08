@@ -5,64 +5,15 @@ import './Navigation.css'
 
 import ReactTooltip from "react-tooltip";
 
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 // import { connect } from "../../../redux/blockchain/blockchainActions";
 // import { fetchData } from "../../../redux/data/dataActions";
 
 // import { initWeb3Onboard } from '../../../services'
 // import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 
-let provider;
-const bscChainId = '0x38';
-// const bscChainId = '0x61';
 
 const Navigation = () => {
-    ///////////// web3-onboard /////////////
-    // const [{ wallet }, connectWallet, disconnectWallet] = useConnectWallet();
-    // const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
-    // const connectedWallets = useWallets();
-  
-    // const [web3Onboard, setWeb3Onboard] = useState(null);
-  
-    useEffect(() => {
-      // setWeb3Onboard(initWeb3Onboard);
-
-      // dispatch(fetchData());
-    }, [])
-
-    // useEffect(() => {
-    //   if (!connectedWallets.length) return;
-  
-    //   const connectedWalletsLabelArray = connectedWallets.map(
-    //     ({ label }) => label
-    //   )
-    //   window.localStorage.setItem(
-    //     'connectedWallets',
-    //     JSON.stringify(connectedWalletsLabelArray)
-    //   )
-    // }, [connectedWallets]);
-  
-    // useEffect(() => {
-    //   if (wallet && connectedChain.id !== bscChainId) {
-    //     setChain({chainId: bscChainId});
-    //   }
-
-    //   if (!wallet?.provider) {
-    //     provider = null;
-    //   } else {
-    //     provider = wallet.provider;
-    //   }
-    //   if (wallet && connectedChain.id === bscChainId)
-    //   {
-    //     dispatch(connect(wallet.accounts[0].address, provider));
-    //     getData();
-    //   }
-    // }, [wallet]);
-  
-    /////////////////////////
-
-    const dispatch = useDispatch();
-    const blockchain = useSelector((state) => state.blockchain);
 
     const getData = () => {
       // dispatch(fetchData());
@@ -96,6 +47,7 @@ const Navigation = () => {
                       <button className='wallet-btn' data-tip data-for="registerTip" onClick={
                           (e) => {
                               e.preventDefault();
+                              // connectWallet();
                           }}>
                                 Connect Wallet
                       </button>

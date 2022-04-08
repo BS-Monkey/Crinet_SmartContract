@@ -1,0 +1,30 @@
+.btn-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.video-padding {
+  padding: 1rem;
+}
+
+.help-card{
+  position: relative;
+  border: double 3px transparent;
+  border-radius: 20px;
+  background-image: linear-gradient(white, white), 
+                    linear-gradient(to right, rgba(20, 95, 233, 0.877),rgba(150, 7, 206, 0.808));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  margin-bottom: 3rem;
+  width: 60%;
+  display: inline-grid;
+}
+
+@media (max-width:550px) {
+  .help-card {
+      width: 100%;
+  }
+}

@@ -5,25 +5,99 @@ import './Navigation.css'
 
 import ReactTooltip from "react-tooltip";
 
-// import { useDispatch, useSelector } from "react-redux";
-// import { connect } from "../../../redux/blockchain/blockchainActions";
-// import { fetchData } from "../../../redux/data/dataActions";
+import { useDispatch, useSelector } from "react-redux";
+import { connect } from "../../../redux/blockchain/blockchainActions";
+import { fetchData } from "../../../redux/data/dataActions";
 
-// import { initWeb3Onboard } from '../../../services'
-// import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
+import { initWeb3Onboard } from '../../../services'
+import { useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 
+let provider;
+const bscChainId = '0x38';
+// const bscChainId = '0x61';
 
 const Navigation = () => {
+    ///////////// web3-onboard /////////////
+    const [{ wallet }, connectWallet, disconnectWallet] = useConnectWallet();
+    const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
+    const connectedWallets = useWallets();
+  
+    const [web3Onboard, setWeb3Onboard] = useState(null);
+  
+    useEffect(() => {
+      setWeb3Onboard(initWeb3Onboard);
+
+    //   dispatch(fetchData());
+    }, [])
+
+    useEffect(() => {
+      if (!connectedWallets.length) return;
+  
+      const connectedWalletsLabelArray = connectedWallets.map(
+        ({ label }) => label
+      )
+      window.localStorage.setItem(
+        'connectedWallets',
+        JSON.stringify(connectedWalletsLabelArray)
+      )
+    }, [connectedWallets]);
+  
+    useEffect(() => {
+      if (wallet && connectedChain?.id !== bscChainId) {
+        setChain({chainId: bscChainId});
+      }
+
+      if (!wallet?.provider) {
+        provider = null;
+      } else {
+        provider = wallet.provider;
+      }
+      if (wallet && connectedChain?.id === bscChainId)
+      {
+        dispatch(connect(wallet.accounts[0].address, provider));
+        getData();
+      }
+    }, [wallet]);
+  
+    // useEffect(() => {
+    //   const previouslyConnectedWallets = JSON.parse(
+    //     window.localStorage.getItem('connectedWallets')
+    //   )
+  
+    //   if (previouslyConnectedWallets?.length) {
+    //     async function setWalletFromLocalStorage() {
+    //       await connectWallet({ autoSelect: previouslyConnectedWallets[0] })
+    //     }
+    //     setWalletFromLocalStorage();
+    //   }
+    // }, [web3Onboard, connectWallet])
+  
+    // const readyToTransact = async () => {
+    //   if (!wallet) {
+    //     const walletSelected = await connectWallet();
+    //     if (!walletSelected) return false;
+    //   }
+
+    //   await setChain({ chainId: bscChainId });
+  
+    //   return true;
+    // }
+    /////////////////////////
+
+    const dispatch = useDispatch();
+    const blockchain = useSelector((state) => state.blockchain);
 
     const getData = () => {
-      // dispatch(fetchData());
+    //   dispatch(fetchData());
     };
 
-    // useEffect(() => {
-    //     let timer = setInterval(() => {
-    //     getData();
-    //   }, 3000);
-    // });
+    useEffect(() => {
+        let timer = setInterval(() => {
+        getData();
+      }, 3000);
+    
+      // return () => clearInterval(timer);
+    });
 
     return (
         <div className='mt-5 pt-4'>
@@ -44,10 +118,29 @@ const Navigation = () => {
             </Col>
             <Col sm={12} md={4}>  
                 <div className='affiliate'>
+                {wallet && connectedChain?.id === bscChainId && wallet?.accounts[0]?.address ? (
+                      <button className='wallet-btn' onClick={
+                        (e) => {
+                          e.preventDefault();
+
+                          connectWallet();
+                        }}>
+                              {`${wallet.accounts[0].address.slice(0, 5) + "..." + wallet.accounts[0].address.slice(38)}`}
+                      </button>
+                  ) : wallet ?
+                      <button className='wallet-btn' onClick={
+                        (e) => {
+                            e.preventDefault();
+                            setChain({chainId: bscChainId});
+                        }}>
+                              Switch Chain
+                      </button>
+                    :
+                    <>
                       <button className='wallet-btn' data-tip data-for="registerTip" onClick={
                           (e) => {
                               e.preventDefault();
-                              // connectWallet();
+                              connectWallet();
                           }}>
                                 Connect Wallet
                       </button>
@@ -58,6 +151,8 @@ const Navigation = () => {
                         Go incognito mode if you still don't find your wallet. <br/>
                         </p>
                       </ReactTooltip>
+                    </>
+                }
                 </div>
             </Col>
         </Row>

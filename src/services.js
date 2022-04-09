@@ -5,12 +5,12 @@ import { init } from '@web3-onboard/react'
 import injectedModule, {ProviderLabel} from '@web3-onboard/injected-wallets'
 import ledgerModule from '@web3-onboard/ledger'
 import walletConnectModule from '@web3-onboard/walletconnect'
-// import walletLinkModule from '@web3-onboard/walletlink'
-// import portisModule from '@web3-onboard/portis'
-// import fortmaticModule from '@web3-onboard/fortmatic'
-// import torusModule from '@web3-onboard/torus'
-// import keepkeyModule from '@web3-onboard/keepkey'
-// import gnosisModule from '@web3-onboard/gnosis'
+import walletLinkModule from '@web3-onboard/walletlink'
+import portisModule from '@web3-onboard/portis'
+import fortmaticModule from '@web3-onboard/fortmatic'
+import torusModule from '@web3-onboard/torus'
+import keepkeyModule from '@web3-onboard/keepkey'
+import gnosisModule from '@web3-onboard/gnosis'
 
 
 const injected = injectedModule({
@@ -21,26 +21,33 @@ const injected = injectedModule({
   }
 })
 
-// const walletLink = walletLinkModule()
+const walletLink = walletLinkModule()
 const walletConnect = walletConnectModule()
 
-// const portis = portisModule({
-//   apiKey: 'b2b7586f-2b1e-4c30-a7fb-c2d1533b153b'
-// })
+const portis = portisModule({
+  apiKey: 'b2b7586f-2b1e-4c30-a7fb-c2d1533b153b'
+})
 
-// const fortmatic = fortmaticModule({
-//   apiKey: 'pk_test_886ADCAB855632AA'
-// })
+const fortmatic = fortmaticModule({
+  apiKey: 'pk_test_886ADCAB855632AA'
+})
 
-// const torus = torusModule()
-// const ledger = ledgerModule()
-// const keepkey = keepkeyModule()
-// const gnosis = gnosisModule()
+const torus = torusModule()
+const ledger = ledgerModule()
+const keepkey = keepkeyModule()
+const gnosis = gnosisModule()
 
 export const initWeb3Onboard = init({
   wallets: [
     injected,
-    walletConnect
+    walletConnect,
+    ledger,
+    fortmatic,
+    walletLink,
+    gnosis,
+    keepkey,
+    portis,
+    torus
   ],
   chains: [
     {

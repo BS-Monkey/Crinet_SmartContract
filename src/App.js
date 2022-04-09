@@ -8,12 +8,12 @@ import Slide from '@material-ui/core/Slide';
 function App() {
   return (
     <SnackbarProvider
-    anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-    }}
-    maxSnack={1}
-    TransitionComponent={Slide}
+      anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+      }}
+      maxSnack={1}
+      TransitionComponent={Slide}
     >
       <div className="App">
         <HomePage></HomePage>

@@ -44,8 +44,8 @@ const PublicPresales = () => {
     async function UpdateClaimAmount() {
         if (blockchain.account && blockchain.smartContract) {
             let amount;
-            amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
-            setClaimableAmount(amount);
+            // amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
+            // setClaimableAmount(amount);
         }
     }
 
@@ -103,14 +103,14 @@ const PublicPresales = () => {
 
     const handleSubmit = (value) => {
         const load = async () => {
-            let busdAmount = await blockchain.busdContract.methods
+            let usdtAmount = await blockchain.busdContract.methods
                     .balanceOf(blockchain.account)
                     .call();
                     
-            busdAmount = web3.utils.fromWei(busdAmount.toString(), 'ether');
+            usdtAmount = web3.utils.fromWei(usdtAmount.toString(), 'ether');
 
-            if (parseInt(busdAmount) < parseInt(value)) {
-                enqueueSnackbar(`Insufficient BUSD balance. Your balance is ${Number.parseFloat(busdAmount).toFixed(2)}`, { variant: 'warning' });
+            if (parseInt(usdtAmount) < parseInt(value)) {
+                enqueueSnackbar(`Insufficient USDT balance. Your balance is ${Number.parseFloat(usdtAmount).toFixed(2)}`, { variant: 'warning' });
                 return;
             }
 
@@ -121,27 +121,13 @@ const PublicPresales = () => {
                     .approve(blockchain.smartContract._address, web3.utils.toWei(value.toString(), 'ether'))
                     .send({ from: blockchain.account });
 
-                const separator = 'r=';
-                const offset = separator.length;
-                const href = window.location.href;
-                const begin = href.indexOf(separator) + offset;
-                let addrStr = href.slice(begin, begin + 42);
-                const addrNull = '0x0000000000000000000000000000000000000000';
-                if (addrStr && web3.utils.isAddress(addrStr)) {
-                    if (addrStr == blockchain.account) {
-                        addrStr = addrNull;
-                    }
-                } else {
-                    addrStr = addrNull;
-                }
-
                 await blockchain.smartContract.methods
-                    .buyTokens(web3.utils.toWei(value.toString(), 'ether'), addrStr)
+                    .buy(value)
                     .send({ from: blockchain.account });
                 
-                dispatch(fetchData());
+                // dispatch(fetchData());
 
-                UpdateClaimAmount();
+                // UpdateClaimAmount();
 
                 enqueueSnackbar('You have successfully purchased $CNT', { variant: 'success' });
             } catch (err) {
@@ -156,7 +142,6 @@ const PublicPresales = () => {
         // if (timer) {
         //     clearInterval(timer);
         // }
-        
         if (blockchain.account) {
             setShow(true);
         } else {
@@ -236,78 +221,7 @@ const PublicPresales = () => {
         <div className='mt-5 pt-4'>
             <BuyDlg show={show} handleClose={handleClose} handleSubmit={handleSubmit} price={data.cntPrice}></BuyDlg>
             <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="tX6K1nAxEIc" onClose={() => setOpen(false)} />
-
-            {/*----------------------------------- Round one/// */}
-            {/* {parseInt(data.activeRound) == 0 ?
-                <div className='container'>
-                <div className='presales-card live-section'>
-                    <div className='lh-1 pt-3'>
-                        <div className='public-heading'>
-                            <h3> PUBLIC PRESALE</h3>
-                            <p>ICO Round #1</p>
-                        </div>
-                    </div> 
-                    <button className='upcoming-btn' disabled={true}>UPCOMING</button>
-                    <button className='tutorial-btn' onClick={()=> setOpen(true)}><h6>How To Buy Tutorial</h6></button>
-                    <div align="center">
-                        <ProgressBar>
-                        </ProgressBar>
-                    </div>
-                    <div className='private-bnb text-dark'>
-                        <p><strong>0 BUSD</strong></p>
-                        <p>
-                            <strong>500,000 BUSD</strong> <br />
-                            <button className='hard-cup' disabled={true}>HARD CAP FOR ROUND 1 : 500,000 BUSD</button>
-                        </p>
-                    </div>
-                    <div className='public-bycnt'>
-                        <Row className='mx-auto'>
-                            <Col sm={12} md={4} className='roundOne pt-0'>
-                                <div className='roundOneUSD'>
-                                    <div className='me-3'>
-                                        <div className='d-flex'>
-                                            <img src={pIco} alt="" />
-                                            <div className='text-start ps-2'>
-                                                <span className='text-secondary'>1 CNT</span>
-                                                <h6 style={{ fontWeight: '800' }}>$0.0075</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col sm={12} md={4}>
-                            <div className='d-flex mb-4' style={{justifyContent: 'center', border: 'double 6px #09e426', borderRadius: '40px', padding: '10px'}}>
-                                    <div className='text-start ms-2'>
-                                        <h5 className='text-secondary' style={{textAlign: 'center'}}>Round #1 starts in:</h5>
-                                        <h4 style={{fontWeight: '800', textAlign: 'center'}}>
-                                            {leading0(deadline.days)}d&nbsp;
-                                            {leading0(deadline.hours)}h&nbsp;
-                                            {leading0(deadline.minutes)}m&nbsp; 
-                                            {leading0(deadline.seconds)}s
-                                        </h4>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col sm={12} md={4} className='roundOne pt-0'>
-                                <div>
-                                    <div>
-                                        <div className='total-invisitor'>
-                                            <img src={inPurple} alt="" />
-                                            <div className='text-start ps-2'>
-                                                <span className='text-secondary'>Total Investors</span>
-                                                <h6 style={{ fontWeight: '800' }}>0</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-            </div>
-            : */}
-            {
-            parseInt(data.activeRound) > 1 ?
+            {parseInt(data.activeRound) > 1 ?
                 <FilledCard 
                     roundNumber={1} 
                     hardCap={`${numberFormatter.format(web3.utils.fromWei(data.roundInfo1['hardCap'].toString(), 'ether'))}`}

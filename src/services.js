@@ -51,11 +51,17 @@ export const initWeb3Onboard = init({
   ],
   chains: [
     {
-      id: '0x38',
-      token: 'BNB',
-      label: 'Binance Smart Chain',
-      rpcUrl: 'https://bsc-dataseed.binance.org/'
-    }
+      id: '0x1',
+      token: 'ETH',
+      label: 'Ethereum Mainnet',
+      rpcUrl: `https://mainnet.infura.io/v3/60cc941a9092468d91243db08c286e8f`
+    },
+    {
+      id: '0x4',
+      token: 'rETH',
+      label: 'Ethereum Rinkeby Testnet',
+      rpcUrl: `https://rinkeby.infura.io/v3/60cc941a9092468d91243db08c286e8f`
+    },
   ],
   appMetadata: {
     name: 'Crinet ICO Platform',

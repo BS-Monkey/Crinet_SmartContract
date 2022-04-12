@@ -55,7 +55,7 @@ export const connect = (account, provider) => {
     });
 
     const CONFIG = await configResponse.json();
-
+    console.log('config', CONFIG)
     Web3EthContract.setProvider(provider);
     let web3 = new Web3(provider);
 

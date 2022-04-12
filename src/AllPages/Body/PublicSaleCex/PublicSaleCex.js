@@ -44,8 +44,8 @@ const PublicPresales = () => {
     async function UpdateClaimAmount() {
         if (blockchain.account && blockchain.smartContract) {
             let amount;
-            amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
-            setClaimableAmount(amount);
+            // amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
+            // setClaimableAmount(amount);
         }
     }
 
@@ -97,7 +97,7 @@ const PublicPresales = () => {
     // }, []);
 
     useEffect(() => {
-        UpdateClaimAmount();
+        // UpdateClaimAmount();
     }, [blockchain.account]);
 
 

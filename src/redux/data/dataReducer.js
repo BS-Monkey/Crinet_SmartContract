@@ -1,6 +1,6 @@
 const initialState = {
   loading: false,
-  activeRound: 0,
+  activeRound: 1,
   cntPrice: 1,
   busdAmount: 0,
   investors: 0,

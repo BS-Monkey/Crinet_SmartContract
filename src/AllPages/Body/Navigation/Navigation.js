@@ -13,8 +13,8 @@ import { initWeb3Onboard } from '../../../services'
 import { useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 
 let provider;
-const bscChainId = '0x38';
-// const bscChainId = '0x61';
+const ethChainId = '0x4';
+// const ethChainId = '0x61';
 
 const Navigation = () => {
     ///////////// web3-onboard /////////////
@@ -43,8 +43,10 @@ const Navigation = () => {
     }, [connectedWallets]);
   
     useEffect(() => {
-      if (wallet && connectedChain?.id !== bscChainId) {
-        setChain({chainId: bscChainId});
+      console.log('wallet', wallet)
+      console.log('chain id', connectedChain)
+      if (wallet && connectedChain?.id !== ethChainId) {
+        setChain({chainId: ethChainId});
       }
 
       if (!wallet?.provider) {
@@ -52,12 +54,12 @@ const Navigation = () => {
       } else {
         provider = wallet.provider;
       }
-      if (wallet && connectedChain?.id === bscChainId)
+      if (wallet && connectedChain?.id === ethChainId)
       {
         dispatch(connect(wallet.accounts[0].address, provider));
         getData();
       }
-    }, [wallet]);
+    }, [wallet, connectedChain]);
   
     // useEffect(() => {
     //   const previouslyConnectedWallets = JSON.parse(
@@ -78,7 +80,7 @@ const Navigation = () => {
     //     if (!walletSelected) return false;
     //   }
 
-    //   await setChain({ chainId: bscChainId });
+    //   await setChain({ chainId: ethChainId });
   
     //   return true;
     // }
@@ -118,11 +120,9 @@ const Navigation = () => {
             </Col>
             <Col sm={12} md={4}>  
                 <div className='affiliate'>
-                {wallet && connectedChain?.id === bscChainId && wallet?.accounts[0]?.address ? (
+                {wallet && connectedChain?.id === ethChainId && wallet?.accounts[0]?.address ? (
                       <button className='wallet-btn' onClick={
-                        (e) => {
-                          e.preventDefault();
-
+                        () => {
                           connectWallet();
                         }}>
                               {`${wallet.accounts[0].address.slice(0, 5) + "..." + wallet.accounts[0].address.slice(38)}`}
@@ -131,7 +131,7 @@ const Navigation = () => {
                       <button className='wallet-btn' onClick={
                         (e) => {
                             e.preventDefault();
-                            setChain({chainId: bscChainId});
+                            setChain({chainId: ethChainId});
                         }}>
                               Switch Chain
                       </button>

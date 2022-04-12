@@ -1085,6 +1085,61 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712 {
     }
 }
 
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor() {
+        _setOwner(_msgSender());
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        _;
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _setOwner(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _setOwner(newOwner);
+    }
+
+    function _setOwner(address newOwner) private {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+
 
 // File contracts/Crinet.sol
 
@@ -1102,5 +1157,47 @@ contract Crinet is ERC20, ERC20Permit
 
     function decimals() public pure override returns (uint8) {
         return DECIMAL_PLACES;
+    }
+}
+
+// File contracts/ICO.sol
+
+contract ICO is Ownable
+{
+    uint256 public cost = 1000;
+    uint256 public decimal = 6;
+    address public tokenAddress;
+    address public tokenOwner;
+    address public coinAddress;
+    constructor() {
+    }
+
+    function setCost(uint256 _newCost) public onlyOwner {
+        cost = _newCost;
+    }
+
+    function setDecimal(uint256 _newDecimal) public onlyOwner {
+        decimal = _newDecimal;
+    }
+
+    function setTokenAddress(address _tokenAddress) public onlyOwner {
+        tokenAddress = _tokenAddress;
+    }
+
+    function setTokenOwner(address _tokenOwner) public onlyOwner {
+        tokenOwner = _tokenOwner;
+    }
+
+    function setCoinAddress(address _coinAddress) public onlyOwner {
+        coinAddress = _coinAddress;
+    }
+
+    function buy(uint256 _amount) public {
+        uint256 tokenAmount = (_amount * 10 ** decimal / cost) * 10 ** ERC20(tokenAddress).decimals();
+        uint256 coinAmount = _amount * 10 ** ERC20(coinAddress).decimals();
+        require(ERC20(coinAddress).balanceOf(msg.sender) > coinAmount, "not enough coin");
+        ERC20(coinAddress).transferFrom(msg.sender, tokenOwner, coinAmount);
+        require(ERC20(tokenAddress).balanceOf(tokenOwner) > tokenAmount, "not enough token");
+        ERC20(tokenAddress).transferFrom(tokenOwner, msg.sender, tokenAmount);
     }
 }

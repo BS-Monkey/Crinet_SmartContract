@@ -406,6 +406,208 @@ const PublicPresales = () => {
                     </div>
                 </div>
             }
+
+            {/* ------------------------------------------//Round two */}
+            {parseInt(data.activeRound) > 2 ?
+                <FilledCard 
+                    roundNumber={2} 
+                    hardCap={`${numberFormatter.format(web3.utils.fromWei(data.roundInfo2['hardCap'].toString(), 'ether'))}`}
+                    price={data.roundInfo2['cntPrice'] / 10000}
+                    investors={Number(data.investors2)}
+                    period={data.roundInfo2['endTime'] - data.roundInfo2['startTime']}>
+                </FilledCard>
+            :
+            <div className='container'>
+                <div className={data.activeRound == '2' ? 'presales-card mt-4 mb-4 live-section' : 'presales-card mt-4 mb-4'}>
+                    <div className='lh-1 pt-3'>
+                        <div className='public-heading'>
+                            <h3>PUBLIC PRESALE</h3>
+                            <p>ICO Round #2</p>
+                        </div>
+                    </div>
+                    {parseInt(data.activeRound) < 2 ? 
+                    <button className='upcoming-btn' disabled={true}>UPCOMING</button>
+                    : parseInt(data.activeRound) == 2 && 
+                    <>
+                    <button className='presales-btn' disabled={true}>LIVE</button>
+                    <button className='tutorial-btn' onClick={()=> setOpen(true)}><h6>How To Buy Tutorial</h6></button>
+                    </>
+                    }
+                    <div align="center">
+                        <ProgressBar
+                            now={web3.utils.fromWei(data.busdAmount2.toString(), 'ether')} 
+                            label={data.roundInfo2 && `${Math.floor(data.busdAmount2 / data.roundInfo2['hardCap'] * 100)} %`/*+ &nbsp;*/} 
+                            max={data.roundInfo2 && web3.utils.fromWei(data.roundInfo2['hardCap'].toString(), 'ether')}>     
+                        </ProgressBar>
+                    </div>
+                    <div className='private-bnb text-dark'>
+                        <p><strong>0 BUSD</strong></p>
+                        <p>
+                            <strong>{data.roundInfo2 && `${ numberFormatter.format(web3.utils.fromWei(data.roundInfo2['hardCap'].toString(), 'ether'))}`} BUSD</strong> <br />
+                            <button className='hard-cup' disabled={true}>HARD CAP FOR ROUND 2 : {data.roundInfo2 && `${ numberFormatter.format(web3.utils.fromWei(data.roundInfo2['hardCap'].toString(), 'ether'))}`} BUSD </button>
+                        </p>
+                    </div>
+                    <div className='public-bycnt'>
+                        <Row className='mx-auto my-2'>
+                            <Col sm={12} md={4}>
+                                <div className='roundOneUSD'>
+                                    <div className='me-3'>
+                                        <div className='d-flex'>
+                                            <img src={pIco} alt="" />
+                                            <div className='text-start ps-2'>
+                                                <span className='text-secondary'>1 CNT</span>
+                                                <h6 style={{ fontWeight: '800' }}>${data.roundInfo2 && data.roundInfo2['cntPrice'] / 10000}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <div className='total-invisitor'>
+                                                <img src={inPurple} alt="" />
+                                                <div className='text-start ps-2'>
+                                                    <span className='text-secondary'>Total Investors</span>
+                                                    <h6 style={{ fontWeight: '800' }}>{Number(data.investors2)}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col sm={12} md={4}>
+                            {data.activeRound == '2' &&
+                                <div>
+                                    <button className='buyUsdt-btn' onClick={buyToken}><p>BUY CNT</p></button>
+                                </div>
+                            }
+                            </Col>
+                            <Col sm={12} md={4} className='roundOne pt-0'>
+                                <div className='d-flex' style={{marginTop: '20px'}}>
+                                    <div><img style={{ width: '40px', height: '40px'}} src={bxtime} alt="" /></div>
+                                    {
+                                        parseInt(data.activeRound) < 2 ? 
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #2 starts</span>
+                                            <h6 className='text-secondary'>when Round #1 Hard Cap is reached</h6>
+                                        </div>
+                                        : parseInt(data.activeRound) == 2 ?
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #2 ends</span>
+                                            <h6 className='text-secondary'>when Hard Cap is reached</h6>
+                                        </div>
+                                        :
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #2</span>
+                                            <h6 style={{fontWeight: '800'}}>FILLED</h6>
+                                        </div>
+                                    }
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </div>
+            </div>
+            }
+            {/* //-----------------------------------Round three */}
+            {data.activeRound == 3 && data.roundInfo3['active'] == false ?
+                <FilledCard 
+                    roundNumber={3} 
+                    hardCap={`${numberFormatter.format(web3.utils.fromWei(data.roundInfo1['hardCap'].toString(), 'ether'))}`}
+                    price={data.roundInfo2['cntPrice'] / 10000}
+                    investors={Number(data.investors3)}
+                    period={data.roundInfo3['endTime'] - data.roundInfo3['startTime']}>
+                </FilledCard>
+            :
+            <div className='container'>
+                <div className={data.activeRound == '3' && data.roundInfo3['active'] == true? 'presales-card mt-4 mb-4 live-section' : 'presales-card mt-4 mb-4'}>
+                    <div className='lh-1 pt-3'>
+                        <div className='public-heading'>
+                            <h3>PUBLIC PRESALE</h3>
+                            <p>ICO Round #3</p>
+                        </div>
+                    </div>
+                    {parseInt(data.activeRound) < 3 ? 
+                    <button className='upcoming-btn' disabled={true}>UPCOMING</button>
+                    : parseInt(data.activeRound) == 3 && data.roundInfo3['active'] == true &&
+                    <>
+                    <button className='presales-btn' disabled={true}>LIVE</button>
+                    <button className='tutorial-btn' onClick={()=> setOpen(true)}><h6>How To Buy Tutorial</h6></button>
+                    </>
+                    }
+                    <div align="center">
+                        <ProgressBar 
+                        now={web3.utils.fromWei(data.busdAmount3.toString(), 'ether')} 
+                        label={data.roundInfo3 && `${Math.floor(data.busdAmount3 / data.roundInfo3['hardCap'] * 100)} %`/*+ &nbsp;*/} 
+                        max={data.roundInfo3 && web3.utils.fromWei(data.roundInfo3['hardCap'].toString(), 'ether')}></ProgressBar>
+                    </div>
+                    <div className='private-bnb text-dark'>
+                        <p><strong>0 BUSD</strong></p>
+                        <p>
+                            <strong>{data.roundInfo3 && `${ numberFormatter.format(web3.utils.fromWei(data.roundInfo3['hardCap'].toString(), 'ether'))}`} BUSD</strong> <br />
+                            <button className='hard-cup' disabled={true}>HARD CAP FOR ROUND 3 : {data.roundInfo3 && `${ numberFormatter.format(web3.utils.fromWei(data.roundInfo3['hardCap'].toString(), 'ether'))}`} BUSD </button>
+                        </p>
+                    </div>
+                    <div className='public-bycnt'>
+                        <Row className='mx-auto my-2'>
+                            <Col sm={12} md={4}>
+                                <div className='roundOneUSD'>
+                                    <div className='me-3'>
+                                        <div className='d-flex'>
+                                            <img src={pIco} alt="" />
+                                            <div className='text-start ps-2'>
+                                                <span className='text-secondary'>1 CNT</span>
+                                                <h6 style={{ fontWeight: '800' }}>${data.roundInfo3 && data.roundInfo3['cntPrice'] / 10000}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <div className='total-invisitor'>
+                                                <img src={inPurple} alt="" />
+                                                <div className='text-start ps-2'>
+                                                    <span className='text-secondary'>Total Investors</span>
+                                                    <h6 style={{ fontWeight: '800' }}>{Number(data.investors3)}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col sm={12} md={4}>
+                                {data.activeRound == '3' &&
+                                <div>
+                                    <button className='buyUsdt-btn' onClick={buyToken}><p>BUY CNT</p></button>
+                                </div>
+                                }
+
+                            </Col>
+                            <Col sm={12} md={4} className='roundOne pt-0'>
+                                <div className='d-flex ' style={{marginTop: '20px'}}>
+                                    <div><img style={{ width: '40px', height: '40px' }} src={bxtime} alt="" /></div>
+                                    {
+                                        parseInt(data.activeRound) < 3 ? 
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #3 starts</span>
+                                            <h6 className='text-secondary'>when Round #2 Hard Cap is reached</h6>
+                                        </div>
+                                        : parseInt(data.activeRound) == 3 ?
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #3 ends</span>
+                                            <h6 className='text-secondary'>when Hard Cap is reached</h6>
+                                        </div>
+                                        :
+                                        <div className='text-start ms-2'>
+                                            <span className='text-secondary'>Round #3</span>
+                                            <h6 style={{fontWeight: '800'}}>FILLED</h6>
+                                        </div>
+                                    }
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </div>
+            </div>
+            }
+
             {/* //-----------------------------------Claim */}
             <Container>
             <div className={data.activeRound == 3 && data.roundInfo3['active'] == false? 'claim-card live-claim' : 'claim-card'}>

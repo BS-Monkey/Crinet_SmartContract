@@ -42,11 +42,11 @@ const PublicPresales = () => {
     }
 
     async function UpdateClaimAmount() {
-        if (blockchain.account && blockchain.smartContract) {
-            let amount;
-            amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
-            setClaimableAmount(amount);
-        }
+        // if (blockchain.account && blockchain.smartContract) {
+        //     let amount;
+        //     amount = await blockchain.smartContract.methods.claimableAmounts(blockchain.account).call();
+        //     setClaimableAmount(amount);
+        // }
     }
 
     function getDays(time) {
@@ -157,6 +157,7 @@ const PublicPresales = () => {
         load();
     }
     async function buyToken() {
+        console.log('buy token', blockchain);
         // if (timer) {
         //     clearInterval(timer);
         // }

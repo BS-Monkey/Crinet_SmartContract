@@ -234,8 +234,6 @@ const PublicPresales = () => {
         );
     }
 
-    console.log(data);
-    
     return (
         <div className='mt-5 pt-4'>
             <BuyDlg show={show} handleClose={handleClose} handleSubmit={handleSubmit} price={data.cntPrice}></BuyDlg>
@@ -319,7 +317,7 @@ const PublicPresales = () => {
                 </FilledCard>
             :
                 <div className='container'>
-                    <div className={data.activeRound == '1' ? 'presales-card live-section' : 'presales-card'}>
+                    <div className={data.activeRound == 1 ? 'presales-card live-section mb-4' : 'presales-card mb-4'}>
                         <div className='lh-1 pt-3'>
                             <div className='public-heading'>
                                 <h3> PUBLIC PRESALE</h3>

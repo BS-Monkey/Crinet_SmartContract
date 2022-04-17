@@ -39,6 +39,14 @@ export const connect = (account, provider) => {
     });
     const abi = await abiResponse.json();
 
+    const tokenABIResponse = await fetch("/config/erc20ABI.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    const tokenABI = await tokenABIResponse.json();
+
     const busdABIResponse = await fetch("/config/erc20ABI.json", {
       headers: {
         "Content-Type": "application/json",
@@ -64,6 +72,11 @@ export const connect = (account, provider) => {
       CONFIG.CONTRACT_ADDRESS
     );
 
+    let TokenContractObj = new Web3EthContract(
+      tokenABI,
+      CONFIG.TOKEN_ADDRESS
+    );
+
     let BUSDContractObj = new Web3EthContract(
       busdABI,
       CONFIG.BUSD_ADDRESS
@@ -73,6 +86,7 @@ export const connect = (account, provider) => {
       connectSuccess({
         account: account,
         smartContract: SmartContractObj,
+        tokenContract: TokenContractObj,
         busdContract: BUSDContractObj,
         web3: web3,
       })

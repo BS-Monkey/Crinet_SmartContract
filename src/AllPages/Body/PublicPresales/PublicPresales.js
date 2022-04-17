@@ -37,6 +37,8 @@ const PublicPresales = () => {
 
     const [claimableAmount, setClaimableAmount] = useState(0);
 
+    const [CNTAmount, setCNTAmount] = useState(0)
+
     const handleClose = () => {
         setShow(false);
     }
@@ -99,6 +101,20 @@ const PublicPresales = () => {
     useEffect(() => {
         UpdateClaimAmount();
     }, [blockchain.account]);
+    useEffect(() => {
+        (async () => {
+            if (blockchain.tokenContract) {
+                const tokenAmount = await blockchain.tokenContract.methods
+                    .balanceOf(blockchain.account)
+                    .call();
+                const decimals = await blockchain.tokenContract.methods
+                    .decimals()
+                    .call();
+                if (decimals !== 0)
+                    setCNTAmount(tokenAmount/Math.pow(10, decimals))
+            }
+        })()
+    }, [blockchain.tokenContract])
 
 
     const handleSubmit = (value) => {
@@ -418,7 +434,7 @@ const PublicPresales = () => {
                     <div className='listing-date'>
                     <div className='text-white text-start'>
                             <h6 className='text-secondary'>Your Balance Of CNT</h6>
-                            <h6 style={{color: 'black', fontWeight: '800'}}>{web3.utils.fromWei(claimableAmount.toString(), 'gwei')}</h6>
+                            <h6 style={{color: 'black', fontWeight: '800'}}>{CNTAmount}</h6>
                     </div>
                     </div>
     

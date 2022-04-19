@@ -122,8 +122,11 @@ const PublicPresales = () => {
             let usdtAmount = await blockchain.busdContract.methods
                     .balanceOf(blockchain.account)
                     .call();
-                    
-            usdtAmount = web3.utils.fromWei(usdtAmount.toString(), 'ether');
+            let usdtDecimal = await blockchain.busdContract.methods
+                    .decimals()
+                    .call();
+            console.log(usdtAmount)
+            usdtAmount = usdtAmount/usdtDecimal;
 
             if (parseInt(usdtAmount) < parseInt(value)) {
                 enqueueSnackbar(`Insufficient USDT balance. Your balance is ${Number.parseFloat(usdtAmount).toFixed(2)}`, { variant: 'warning' });
@@ -134,7 +137,7 @@ const PublicPresales = () => {
                 console.log("APPROVE", value);
 
                 await blockchain.busdContract.methods
-                    .approve(blockchain.smartContract._address, web3.utils.toWei(value.toString(), 'ether'))
+                    .approve(blockchain.smartContract._address, parseInt(value) * Math.pow(10, parseInt(usdtDecimal)))
                     .send({ from: blockchain.account });
 
                 // const separator = 'r=';

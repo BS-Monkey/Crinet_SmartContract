@@ -8,11 +8,11 @@ function BuyDlg({show, handleClose, handleSubmit, price}) {
 
     const handleChange = (event) => {
         setValue(event.target.value);
-        setValue1(event.target.value / price * 10000);
+        setValue1(event.target.value / price * 1000);
     }
 
     const handleChangeCNT = (event) => {
-        setValue(event.target.value * price / 10000);
+        setValue(event.target.value * price / 1000);
         setValue1(event.target.value);
     }
 

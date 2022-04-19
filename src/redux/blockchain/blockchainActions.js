@@ -39,7 +39,7 @@ export const connect = (account, provider) => {
     });
     const abi = await abiResponse.json();
 
-    const tokenABIResponse = await fetch("/config/erc20ABI.json", {
+    const tokenABIResponse = await fetch("/config/tokenABI.json", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

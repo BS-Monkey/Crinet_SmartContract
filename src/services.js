@@ -63,6 +63,11 @@ export const initWeb3Onboard = init({
       rpcUrl: `https://rinkeby.infura.io/v3/60cc941a9092468d91243db08c286e8f`
     },
   ],
+  accountCenter: {
+    desktop: {
+      enabled: false // default: true
+    }
+  },
   appMetadata: {
     name: 'Crinet ICO Platform',
     icon: blocknativeIcon,
